@@ -27,7 +27,7 @@ public class Application {
 		SpringApplication.run(Application.class);
 	}
 	
-    @Bean
+    //@Bean
     public CommandLineRunner demo(JavaScriptFrameworkRepository repository) {
 
        return (args) -> {
@@ -48,7 +48,7 @@ public class Application {
            log.info("");
 
            // fetch an individual framework by ID
-           JavaScriptFramework framework = repository.findById(1L);
+           JavaScriptFramework framework = repository.findById(1L).get();
            log.info("JavaScriptFramework found with findById(1L):");
            log.info("--------------------------------");
            log.info(framework.toString());

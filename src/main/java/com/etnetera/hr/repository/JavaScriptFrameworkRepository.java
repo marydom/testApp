@@ -1,5 +1,6 @@
 package com.etnetera.hr.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
@@ -14,11 +15,10 @@ import com.etnetera.hr.data.JavaScriptFramework;
  */
 public interface JavaScriptFrameworkRepository extends CrudRepository<JavaScriptFramework, Long> {
 
-	List<JavaScriptFramework> findAll();
-
-	JavaScriptFramework findById(long id);
-
 	List<JavaScriptFramework> findByName(String name);
-
-    
+	
+	List<JavaScriptFramework> findByDeprecationDateAfter(LocalDate date);
+	
+	List<JavaScriptFramework> findByHypeLevelOrderByHypeLevelDesc(Integer hypeLevel);
+	
 }

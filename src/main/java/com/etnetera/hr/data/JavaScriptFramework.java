@@ -33,7 +33,7 @@ public class JavaScriptFramework {
 	@Column(nullable = false, length = 30)
 	private String name;
 
-	@Column
+	@Column(nullable = false)
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate deprecationDate;
 
