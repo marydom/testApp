@@ -17,7 +17,6 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
 /**
  * Simple data entity describing basic properties of every JavaScript framework.
  * 
@@ -108,7 +107,8 @@ public class JavaScriptFramework {
 
 	@Override
 	public String toString() {
-		return "JavaScriptFramework [id=" + id + ", name=" + name + ", version" + version + ", deprecationDate=" + deprecationDate + ", hypeLevel=" + hypeLevel + "]";
+		return "JavaScriptFramework [id=" + id + ", name=" + name + ", version" + version + ", deprecationDate="
+				+ deprecationDate + ", hypeLevel=" + hypeLevel + "]";
 	}
 
 }

@@ -42,58 +42,60 @@ public class JavaScriptFrameworkController {
 		return repository.findAll();
 	}
 
-    @PostMapping
-    public JavaScriptFramework createOrSaveFramework(@Valid @RequestBody JavaScriptFramework newFramework) {
-        return repository.save(newFramework);
-    }
- 
-    @GetMapping("/{id}")
-    public JavaScriptFramework getFrameworkById(@PathVariable("id") Long id) {
-        return repository.findById(id).orElseThrow();
-    }
- 
-    @GetMapping("/with-name/{name}")
-    public List <JavaScriptFramework> getFrameworksByName(@PathVariable("name") String name) {
-        return repository.findByName(name);
-    }
- 
-    @GetMapping("/actuals-tomorrow")
-    public List<JavaScriptFramework> getFrameworksByDeprecationDateToday() {
-        return repository.findByDeprecationDateAfter(LocalDate.now());
-    }
- 
-    @GetMapping("/actuals-after/{date}")
-    public List<JavaScriptFramework> getFrameworksByDeprecationDate(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable("date") LocalDate date) {
-        return repository.findByDeprecationDateAfter(date);
-    }
- 
-    @GetMapping("/with-hype/{hypeLevel}")
-    public List<JavaScriptFramework> getFrameworksByHypeLevel(@PathVariable("hypeLevel") Integer hypeLevel) {
-        return repository.findByHypeLevelGreaterThanOrderByHypeLevelDesc(hypeLevel);
-    }
- 
-    @PutMapping("/{id}")
-    public JavaScriptFramework updateFramework(@Valid @RequestBody JavaScriptFramework newFramework, @PathVariable("id") Long id) {
- 
-        return repository.findById(id).map(framework -> {
-            framework.setName(newFramework.getName());
-            framework.setDeprecationDate(newFramework.getDeprecationDate());
-            framework.setHypeLevel(newFramework.getHypeLevel());
-            framework.setVersion(newFramework.getVersion());
-            return repository.save(framework);
-        }).orElseGet(() -> {
-            newFramework.setId(id);
-            return repository.save(newFramework);
-        });
-    }
- 
-    @DeleteMapping
-    public void deleteFrameworks() {
-        repository.deleteAll();
-    }
+	@PostMapping
+	public JavaScriptFramework createOrSaveFramework(@Valid @RequestBody JavaScriptFramework newFramework) {
+		return repository.save(newFramework);
+	}
 
-    @DeleteMapping("/{id}")
-    public void deleteFramework(@PathVariable("id") Long id) {
-        repository.deleteById(id);
-    }
+	@GetMapping("/{id}")
+	public JavaScriptFramework getFrameworkById(@PathVariable("id") Long id) {
+		return repository.findById(id).orElseThrow();
+	}
+
+	@GetMapping("/with-name/{name}")
+	public List<JavaScriptFramework> getFrameworksByName(@PathVariable("name") String name) {
+		return repository.findByName(name);
+	}
+
+	@GetMapping("/actual-by/now")
+	public List<JavaScriptFramework> getFrameworksByDeprecationDateToday() {
+		return repository.findByDeprecationDateGreaterThanEqual(LocalDate.now());
+	}
+
+	@GetMapping("/actual-by/{date}")
+	public List<JavaScriptFramework> getFrameworksByDeprecationDate(
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable("date") LocalDate date) {
+		return repository.findByDeprecationDateGreaterThanEqual(date);
+	}
+
+	@GetMapping("/with-hype/{hypeLevel}")
+	public List<JavaScriptFramework> getFrameworksByHypeLevel(@PathVariable("hypeLevel") Integer hypeLevel) {
+		return repository.findByHypeLevelGreaterThanOrderByHypeLevelDesc(hypeLevel);
+	}
+
+	@PutMapping("/{id}")
+	public JavaScriptFramework updateFramework(@Valid @RequestBody JavaScriptFramework newFramework,
+			@PathVariable("id") Long id) {
+
+		return repository.findById(id).map(framework -> {
+			framework.setName(newFramework.getName());
+			framework.setDeprecationDate(newFramework.getDeprecationDate());
+			framework.setHypeLevel(newFramework.getHypeLevel());
+			framework.setVersion(newFramework.getVersion());
+			return repository.save(framework);
+		}).orElseGet(() -> {
+			newFramework.setId(id);
+			return repository.save(newFramework);
+		});
+	}
+
+	@DeleteMapping
+	public void deleteFrameworks() {
+		repository.deleteAll();
+	}
+
+	@DeleteMapping("/{id}")
+	public void deleteFramework(@PathVariable("id") Long id) {
+		repository.deleteById(id);
+	}
 }

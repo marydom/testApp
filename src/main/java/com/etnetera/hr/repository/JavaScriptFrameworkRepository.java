@@ -16,9 +16,9 @@ import com.etnetera.hr.data.JavaScriptFramework;
 public interface JavaScriptFrameworkRepository extends CrudRepository<JavaScriptFramework, Long> {
 
 	List<JavaScriptFramework> findByName(String name);
-	
-	List<JavaScriptFramework> findByDeprecationDateAfter(LocalDate date);
-	
+
+	List<JavaScriptFramework> findByDeprecationDateGreaterThanEqual(LocalDate date);
+
 	List<JavaScriptFramework> findByHypeLevelGreaterThanOrderByHypeLevelDesc(Integer hypeLevel);
-	
+
 }
