@@ -70,7 +70,7 @@ public class JavaScriptFrameworkController {
 
 	@GetMapping("/with-hype/{hypeLevel}")
 	public List<JavaScriptFramework> getFrameworksByHypeLevel(@PathVariable("hypeLevel") Integer hypeLevel) {
-		return repository.findByHypeLevelGreaterThanOrderByHypeLevelDesc(hypeLevel);
+		return repository.findByHypeLevelGreaterThanEqualOrderByHypeLevelDesc(hypeLevel);
 	}
 
 	@PutMapping("/{id}")

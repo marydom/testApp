@@ -53,9 +53,14 @@ public class JavaScriptFrameworkRepositoryTest {
 
 	@Test
 	public void testFindByHypeLevelOrderByHypeLevelDesc() {
-		List<JavaScriptFramework> frameworks = repository.findByHypeLevelGreaterThanOrderByHypeLevelDesc(1);
-		assertThat(frameworks.size()).isEqualTo(2);
-		assertThat(frameworks).allMatch(f -> f.getHypeLevel() > 1);
+		List<JavaScriptFramework> frameworks = repository.findByHypeLevelGreaterThanEqualOrderByHypeLevelDesc(1);
+		assertThat(frameworks.size()).isEqualTo(5);
+		int max = 100;
+		for (JavaScriptFramework f : frameworks) {
+			assertThat(f.getHypeLevel()).isLessThanOrEqualTo(max);
+			max = f.getHypeLevel();
+		}
+		assertThat(max).isGreaterThanOrEqualTo(1);
 	}
 
 }

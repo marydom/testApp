@@ -89,6 +89,12 @@ public class JavaScriptFrameworkTests {
 	}
 
 	@Test
+	public void testFindByHypeLevel() throws Exception {
+		mvc.perform(get("/frameworks/with-hype/10").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(content().json("[{'name':'jQuery'}]"));
+	}
+
+	@Test
 	public void testCreateUpdateDeleteFramework() throws Exception {
 		// original number of frameworks
 		long count = getFrameworkCount();
@@ -113,7 +119,6 @@ public class JavaScriptFrameworkTests {
 		// original number of frameworks - new one deleted
 		mvc.perform(delete("/frameworks/" + id).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 		assertThatCode(() -> controller.getFrameworkById((long) id)).isInstanceOf(NoSuchElementException.class);
-		// controller.getFrameworkById((long) id);
 		assertThat(getFrameworkCount()).isEqualTo(count);
 	}
 
@@ -138,6 +143,13 @@ public class JavaScriptFrameworkTests {
 		assertThatValidationFails(framework);
 		framework = new JavaScriptFramework("Angular", "", LocalDate.of(2021, 11, 30), 45);
 		assertThatValidationFails(framework);
+	}
+
+	@Test
+	public void testUniqueNameAndVersionValidation() throws Exception {
+		JavaScriptFramework framework = new JavaScriptFramework("Vue.js", "3.2", LocalDate.of(2021, 12, 31), 1);
+		assertThatCode(() -> controller.createOrSaveFramework(framework)).isInstanceOf(Exception.class);
+		assertThat(getFrameworkCount()).isEqualTo(5);
 	}
 
 	@Test
