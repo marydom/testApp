@@ -42,7 +42,10 @@ curl http://localhost:8080/frameworks
 
 curl http://localhost:8080/frameworks/with-name/Vue.js
 
+curl http://localhost:8080/frameworks/with-hype/99
+
 curl http://localhost:8080/frameworks/actual-by/2021-01-01
+
 curl http://localhost:8080/frameworks/actual-by/now
 
 curl -X DELETE http://localhost:8080/frameworks/2
