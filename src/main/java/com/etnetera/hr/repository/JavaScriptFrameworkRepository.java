@@ -19,6 +19,6 @@ public interface JavaScriptFrameworkRepository extends CrudRepository<JavaScript
 	
 	List<JavaScriptFramework> findByDeprecationDateAfter(LocalDate date);
 	
-	List<JavaScriptFramework> findByHypeLevelOrderByHypeLevelDesc(Integer hypeLevel);
+	List<JavaScriptFramework> findByHypeLevelGreaterThanOrderByHypeLevelDesc(Integer hypeLevel);
 	
 }

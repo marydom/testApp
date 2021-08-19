@@ -3,7 +3,10 @@ package com.etnetera.hr.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.etnetera.hr.data.JavaScriptFramework;
 import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * Simple REST controller for accessing application logic.
@@ -36,37 +38,42 @@ public class JavaScriptFrameworkController {
 	}
 
 	@GetMapping
-	public Iterable<JavaScriptFramework> frameworks() {
+	public Iterable<JavaScriptFramework> getFrameworks() {
 		return repository.findAll();
 	}
 
     @PostMapping
-    public JavaScriptFramework createOrSaveFramework(@RequestBody JavaScriptFramework newFramework) {
+    public JavaScriptFramework createOrSaveFramework(@Valid @RequestBody JavaScriptFramework newFramework) {
         return repository.save(newFramework);
     }
  
     @GetMapping("/{id}")
     public JavaScriptFramework getFrameworkById(@PathVariable("id") Long id) {
-        return repository.findById(id).get();
+        return repository.findById(id).orElseThrow();
     }
  
-    @GetMapping("/actuals-at")
-    public List<JavaScriptFramework> getFrameworksByDeprecationDateActualToday() {
+    @GetMapping("/with-name/{name}")
+    public List <JavaScriptFramework> getFrameworksByName(@PathVariable("name") String name) {
+        return repository.findByName(name);
+    }
+ 
+    @GetMapping("/actuals-tomorrow")
+    public List<JavaScriptFramework> getFrameworksByDeprecationDateToday() {
         return repository.findByDeprecationDateAfter(LocalDate.now());
     }
  
-    @GetMapping("/actuals-at/{date}")
-    public List<JavaScriptFramework> getFrameworksByDeprecationDate(@JsonFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date) {
+    @GetMapping("/actuals-after/{date}")
+    public List<JavaScriptFramework> getFrameworksByDeprecationDate(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable("date") LocalDate date) {
         return repository.findByDeprecationDateAfter(date);
     }
  
     @GetMapping("/with-hype/{hypeLevel}")
     public List<JavaScriptFramework> getFrameworksByHypeLevel(@PathVariable("hypeLevel") Integer hypeLevel) {
-        return repository.findByHypeLevelOrderByHypeLevelDesc(hypeLevel);
+        return repository.findByHypeLevelGreaterThanOrderByHypeLevelDesc(hypeLevel);
     }
  
     @PutMapping("/{id}")
-    public JavaScriptFramework updateFramework(@RequestBody JavaScriptFramework newFramework, @PathVariable("id") Long id) {
+    public JavaScriptFramework updateFramework(@Valid @RequestBody JavaScriptFramework newFramework, @PathVariable("id") Long id) {
  
         return repository.findById(id).map(framework -> {
             framework.setName(newFramework.getName());
@@ -80,6 +87,11 @@ public class JavaScriptFrameworkController {
         });
     }
  
+    @DeleteMapping
+    public void deleteFrameworks() {
+        repository.deleteAll();
+    }
+
     @DeleteMapping("/{id}")
     public void deleteFramework(@PathVariable("id") Long id) {
         repository.deleteById(id);

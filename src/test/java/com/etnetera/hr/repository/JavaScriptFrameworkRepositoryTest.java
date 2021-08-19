@@ -50,4 +50,11 @@ public class JavaScriptFrameworkRepositoryTest {
 		assertThat(frameworks).allMatch(f -> date.isBefore(f.getDeprecationDate()));
 	}
 
+	@Test
+	public void testFindByHypeLevelOrderByHypeLevelDesc() {
+		List<JavaScriptFramework> frameworks = repository.findByHypeLevelGreaterThanOrderByHypeLevelDesc(1);
+		assertThat(frameworks.size()).isEqualTo(2);
+		assertThat(frameworks).allMatch(f -> f.getHypeLevel() > 1);
+	}
+
 }
