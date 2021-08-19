@@ -19,6 +19,38 @@ https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories
 
 ## Controller
 
+The controller defines REST endpoints. It accepts and produces JSON objects.
+Following endpoints are available:
+
+```
+/frameworks GET, POST, DELETE
+/frameworks/{id} GET, PUT, DELETE
+/frameworks/with-name/{name} GET
+/frameworks/with-hype/{hypeLevel} GET
+/frameworks/actual-by/{date} GET
+/frameworks/actual-by/now GET
+```
+
+#### Sample usage
+
+```bash
+curl http://localhost:8080/frameworks \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Vue.js","deprecationDate":"2023-12-31","hypeLevel":12,"version":"3.1"}'
+
+curl http://localhost:8080/frameworks
+
+curl http://localhost:8080/frameworks/with-name/Vue.js
+
+curl http://localhost:8080/frameworks/actual-by/2021-01-01
+curl http://localhost:8080/frameworks/actual-by/now
+
+curl -X DELETE http://localhost:8080/frameworks/2
+curl -X DELETE http://localhost:8080/frameworks \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Vue.js","deprecationDate":"2023-12-31","hypeLevel":12,"version":"3.1"}'
+```
+
 ## Other thoughts
 
 The current data model only shows the actual "state" of frameworks.
@@ -26,11 +58,6 @@ In the real world there would probably be more columns in the entity:
 * `releaseDate` of the framework
 * `hypeLevelDate` indicating for which date is the given `hypeLevel` valid
 
-## GitHub integration
-There is the following GitHub integration added to the test project.
-
-### CI
-The [java-ci.yml](.github/workflows/java-ci.yml) builds project and runs the tests on push and pull requests to the respective branch.
-
-### Dependabot
-The [dependabot.yml](.github/dependabot.yml) checks daily if there are dependency updates and opens pull requests with new versions.
+## GitHub - CI
+The [java-ci.yml](.github/workflows/java-ci.yml) Github workflow builds project
+and runs the tests on push and pull requests to the respective branch.
